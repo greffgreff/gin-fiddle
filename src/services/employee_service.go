@@ -28,8 +28,8 @@ func GetEmployeeById(id string) (models.Employee, httpExceptions.HttpException) 
 	return employee, err
 }
 
-func CreateEmployee(employee models.Employee) *httpExceptions.HttpException {
-	if employee.Firstname == "" || employee.Lastname == "" {
+func CreateEmployee(employee *models.Employee) *httpExceptions.HttpException {
+	if employee.FirstName == "" || employee.LastName == "" {
 		return &httpExceptions.EmployeeIncomplete
 	}
 
@@ -42,10 +42,11 @@ func CreateEmployee(employee models.Employee) *httpExceptions.HttpException {
 	return nil
 }
 
-func UpdateEmployee(id string, employee models.Employee) *httpExceptions.HttpException {
+func UpdateEmployee(id string, employee *models.Employee) *httpExceptions.HttpException {
+	// make use of gin validation mechanism instead
 	if id == "" {
 		return &httpExceptions.MissingIDParameter
-	} else if employee.Firstname == "" || employee.Lastname == "" {
+	} else if employee.FirstName == "" || employee.LastName == "" {
 		return &httpExceptions.EmployeeIncomplete
 	}
 

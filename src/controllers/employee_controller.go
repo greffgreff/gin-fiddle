@@ -8,8 +8,8 @@ import (
 	"github.com/greffgreff/gin-fiddle/src/services"
 )
 
-func InitializeEmployeeController(routerGroup *gin.RouterGroup) {
-	employeeRouter := routerGroup.Group("/employees")
+func InitializeEmployeeController(rg *gin.RouterGroup) {
+	employeeRouter := rg.Group("/employees")
 	{
 		employeeRouter.GET("", getEmployeeList)
 		employeeRouter.GET("/:id", getEmployeeById)
@@ -42,14 +42,14 @@ func createEmployee(c *gin.Context) {
 
 	c.Bind(&employee)
 
-	err := services.CreateEmployee(employee)
+	err := services.CreateEmployee(&employee)
 
 	if !err.IsEmpty() {
 		c.JSON(err.StatusCode, err)
 		return
 	}
 
-	c.Status(http.StatusCreated)
+	c.JSON(http.StatusCreated, employee)
 }
 
 func updateEmployee(c *gin.Context) {
@@ -58,15 +58,14 @@ func updateEmployee(c *gin.Context) {
 
 	c.Bind(&employee)
 
-	// make use of reference for employee and than return it
-	err := services.UpdateEmployee(id, employee)
+	err := services.UpdateEmployee(id, &employee)
 
 	if !err.IsEmpty() {
 		c.JSON(err.StatusCode, err)
 		return
 	}
 
-	c.Status(http.StatusCreated)
+	c.JSON(http.StatusOK, employee)
 }
 
 func deleteEmployee(c *gin.Context) {
@@ -79,5 +78,5 @@ func deleteEmployee(c *gin.Context) {
 		return
 	}
 
-	c.Status(http.StatusCreated)
+	c.Status(http.StatusOK)
 }
