@@ -5,9 +5,9 @@ import (
 )
 
 type HttpException struct {
-	StatusCode    int
-	Error         string
-	FriendlyError string
+	StatusCode    int    `json:"status"`
+	Error         string `json:"message"`
+	FriendlyError string `json:"friendlyMessage"`
 }
 
 func (err HttpException) IsEmpty() bool {
